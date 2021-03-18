@@ -1,0 +1,5 @@
+---
+# tasks file for swarm-initialise
+- name: 'swarm initialised'
+  shell: docker swarm init
+  register: shell_result

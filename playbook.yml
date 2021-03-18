@@ -1,0 +1,17 @@
+- hosts: all
+  roles:
+  - docker-install
+  tasks:
+  - name: 'restart all hosts'
+    shell: sudo systemctl restart docker
+- hosts: 35.246.63.157
+  roles:
+  - swarm-initialise
+  tasks:        
+  - name: 'token for worker'
+    shell: docker swarm join-token -q worker
+    register: token
+- hosts: 35.246.59.145
+  tasks:        
+  - name: 'join worker to swarm'
+    shell: docker swarm join --token "{{ hostvars['35.246.63.157']['token'].stdout }}" swarm-master:2377
